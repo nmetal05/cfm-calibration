@@ -40,6 +40,3 @@ python train_snpe_v3.py
 python CFM_Comparison/create_plots.py
 ```
 
-## Citation
-
-See paper: H2ST: A Contextual Digital Twin Framework for Urban Traffic Simulation and Calibration Using Simulation-Based Inference
