@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Generated with generateParkingAreasFromOSM.py [https://github.com/lcodeca/SUMOActivityGen] -->
+
+<additional xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/additional_file.xsd"> 
+    <parkingArea id="-674878" lane="-205723_1" startPos="122.42612437931916" endPos="132.42612437931916" roadsideCapacity="6" friendlyPos="true"/>
+    <parkingArea id="-675773" lane="--202915#3_1" startPos="10.0" endPos="20.0" roadsideCapacity="6" friendlyPos="true"/>
+    <parkingArea id="-679219" lane="-204194#0_1" startPos="29.937594266734415" endPos="39.937594266734415" roadsideCapacity="6" friendlyPos="true"/>
+    <parkingArea id="-687337" lane="-203435#1_1" startPos="24.67" endPos="34.67" roadsideCapacity="6" friendlyPos="true"/>
+    <parkingArea id="-691239" lane="-203459#4_1" startPos="79.36" endPos="89.36" roadsideCapacity="6" friendlyPos="true"/>
+</additional>
+    

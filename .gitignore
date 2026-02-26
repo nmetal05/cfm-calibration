@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+
+# SUMO outputs
+output.*
+*.log
+traci.log
+TripGenerationInconsistencyError.log
+vehroutes.xml
+stopinfos.xml
+osm_activitygen.debug.log
+
+# Model outputs (keep final results)
+*.pkl
+snpe_posterior.pkl
+asnpe_posterior.pkl
+snpe_samples.pt
+asnpe_samples.pt
+sbi_*.pt
+sbi_*.npy
+snpe_*.png
+asnpe_*.png
+# Keep these final results
+!snpe_results.npz
+!asnpe_results.npz
+x_obs.pt
+snpe_feature_selection.pt
+snpe_feature_mask.pt
+
+# Debug/temp folders
+inspect_runs/
+debug_sim/
+sbi_runs/
+asnpe_runs/
+
+# LaTeX aux
+*.aux
+*.out
+*.log
+*.toc
+*.dvi
+paper/

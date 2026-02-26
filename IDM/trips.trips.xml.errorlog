@@ -1,0 +1,5 @@
+Warning: At actuated tlLogic 'cluster_-674406_-678806_-681786_-684633_#4more', linkIndex 17,18,19 has no controlling detector.
+Warning: At actuated tlLogic 'cluster_-674735_-677091_-677190_-679692_#11more', linkIndex 10,11,12,13 has no controlling detector.
+Warning: At actuated tlLogic 'cluster_-674800_-675588_-677253_-679740_#7more', linkIndex 9,10,11 has no controlling detector.
+Warning: At actuated tlLogic 'cluster_-675776_-677485_-677836_-679320_#10more', linkIndex 1,2,3 has no controlling detector.
+Warning: busStop '-689825' on lane '-207184#54_0' is too short for vehicle '27_tram_T2:1'.

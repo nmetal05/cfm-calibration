@@ -1,0 +1,430 @@
+python train_snpe_v3.py
+=================================================================
+  SNPE v3 — DEDUPLICATED + STRICT FILTERING
+=================================================================
+
+Budget adjusted: Using 1000 simulations (down from 1000)
+
+Raw: theta=torch.Size([1000, 4]), x=torch.Size([1000, 57]), x_obs=torch.Size([57])
+
+=================================================================
+  STEP 1: STRICT RANGE FILTERING
+=================================================================
+  After range filter: 32 kept, 25 dropped
+    DROP   2                  speedP15: out of range (0.1σ)
+    DROP   3                  speedP20: out of range (0.2σ)
+    DROP   4                  speedP25: out of range (0.2σ)
+    DROP   5                  speedP30: out of range (0.2σ)
+    DROP   6                  speedP35: out of range (0.2σ)
+    DROP   7                  speedP40: out of range (0.1σ)
+    DROP   8                  speedP45: out of range (0.0σ)
+    DROP  23                    stdP10: constant
+    DROP  24                    stdP25: out of range (4.4σ)
+    DROP  25                    stdP50: out of range (1.2σ)
+    DROP  28                  mean_std: out of range (1.3σ)
+    DROP  29                   bin_0-5: out of range (0.4σ)
+    DROP  31                 bin_10-15: out of range (1.8σ)
+    DROP  32                 bin_15-20: out of range (1.8σ)
+    DROP  42                   ttr_P50: out of range (0.2σ)
+    DROP  43                   ttr_P75: out of range (1.1σ)
+    DROP  44                   ttr_P90: out of range (1.6σ)
+    DROP  45                   ttr_P95: out of range (1.4σ)
+    DROP  46                  ttr_mean: out of range (0.6σ)
+    DROP  47                   ttr_std: out of range (6.4σ)
+    DROP  48                ttr_median: out of range (0.2σ)
+    DROP  49            congestion>10%: out of range (1.3σ)
+    DROP  50            congestion>25%: out of range (1.3σ)
+    DROP  51            congestion>50%: out of range (0.7σ)
+    DROP  54                   frac<20: out of range (1.1σ)
+
+=================================================================
+  STEP 2: DEDUPLICATION (|r| > 0.95)
+=================================================================
+  After deduplication: 9 kept, 23 removed
+
+  Final features (9):
+   Idx                      Name |   sFact    sDev   sigma     tau |    x_obs  pctile
+  -----------------------------------------------------------------------------------------------
+    17                  speedP90 |  +0.998  -0.026  -0.002  -0.022 |  37.7900      6%
+    26                    stdP75 |  +0.451  +0.837  -0.002  -0.017 |  11.5000     99%
+    33                 bin_20-25 |  -0.866  +0.055  +0.048  +0.022 |   0.2238     88%
+    34                 bin_25-30 |  -0.870  -0.011  +0.034  +0.018 |   0.1817     65%
+    35                 bin_30-35 |  -0.339  -0.014  -0.079  -0.009 |   0.1043      8%
+    36                 bin_35-40 |  +0.347  +0.001  -0.092  -0.002 |   0.0643     17%
+    37                 bin_40-50 |  +0.812  -0.057  -0.033  -0.006 |   0.0575      9%
+    38                 bin_50-60 |  +0.905  -0.048  +0.034  -0.037 |   0.0131      8%
+    53                   frac<15 |  -0.838  +0.192  +0.042  +0.022 |   0.0845     99%
+
+  Removed by deduplication (23):
+      0                   speedP5  (r=0.978 with speedP90)
+      1                  speedP10  (r=0.980 with speedP90)
+      9                  speedP50  (r=0.995 with speedP90)
+     10                  speedP55  (r=0.996 with speedP90)
+     11                  speedP60  (r=0.997 with speedP90)
+     12                  speedP65  (r=0.997 with speedP90)
+     13                  speedP70  (r=0.998 with speedP90)
+     14                  speedP75  (r=0.997 with speedP90)
+     15                  speedP80  (r=0.996 with speedP90)
+     16                  speedP85  (r=0.992 with speedP90)
+     18                  speedP95  (r=0.996 with speedP90)
+     19                mean_speed  (r=0.998 with speedP90)
+     20                 std_speed  (r=0.997 with speedP90)
+     21              median_speed  (r=0.995 with speedP90)
+     22                 iqr_speed  (r=0.979 with speedP90)
+     27                    stdP90  (r=0.966 with stdP75)
+     30                  bin_5-10  (r=0.963 with speedP90)
+     39                bin_60-120  (r=0.967 with speedP90)
+     40                   ttr_P10  (r=0.979 with speedP90)
+     41                   ttr_P25  (r=0.979 with speedP90)
+     52                   frac<10  (r=0.981 with speedP90)
+     55                   frac>40  (r=0.982 with speedP90)
+     56                   frac>50  (r=0.969 with bin_50-60)
+
+=================================================================
+  STEP 3: FINAL VERIFICATION
+=================================================================
+  ✓ All 9 features: x_obs within training range
+  ✓ Max inter-feature correlation: 0.940 (threshold was 0.95)
+  x_obs percentile range: [6%, 99%]
+  x_obs mean percentile:  44%
+
+  Final shapes:
+    theta:  torch.Size([1000, 4])
+    x:      torch.Size([1000, 9])
+    x_obs:  torch.Size([9])
+
+=================================================================
+  TRAINING NPE
+=================================================================
+  Sims: 1000, Features: 9, Params: 4
+
+ Neural network successfully converged after 171 epochs.
+        -------------------------
+        ||||| ROUND 1 STATS |||||:
+        -------------------------
+        Epochs trained: 171
+        Best validation performance: -6.4804
+        -------------------------
+        
+
+Training: 21.6s (0.4 min)
+
+=================================================================
+  INFERENCE
+=================================================================
+Attempting direct (rejection) sampling...
+  0%|                                                                                | 0/100 [00:00<?, ?it/s]C:\Users\PC\Documents\stage\episode1\Episode2\.testasnpee\lib\site-packages\nflows\transforms\lu.py:80: UserWarning: torch.triangular_solve is deprecated in favor of torch.linalg.solve_triangularand will be removed in a future PyTorch release.
+torch.linalg.solve_triangular has its arguments reversed and does not return a copy of one of the inputs.
+X = torch.triangular_solve(B, A).solution
+should be replaced with
+X = torch.linalg.solve_triangular(A, B). (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\builder\windows\pytorch\aten\src\ATen\native\BatchLinearAlgebra.cpp:2196.)
+  outputs, _ = torch.triangular_solve(
+WARNING:root:Only 0.069% proposal samples are
+                    accepted. It may take a long time to collect the remaining
+                    93 samples. Consider interrupting (Ctrl-C) and switching to
+                    `build_posterior(..., sample_with='mcmc')`.
+101it [00:00, 107.67it/s]                                                                                    
+  Direct sampling works! (0.9s for 100 samples)
+
+Sampling 50000 samples via direct...
+  0%|                                                                              | 0/50000 [00:00<?, ?it/s]WARNING:root:Only 0.030% proposal samples are
+                    accepted. It may take a long time to collect the remaining
+                    49997 samples. Consider interrupting (Ctrl-C) and switching to
+                    `build_posterior(..., sample_with='mcmc')`.
+50001it [07:07, 117.06it/s]                                                                                  
+  Done in 427.2s
+
+      Parameter |     Mean |   Median |      Std |       5% |      95% |      MAP
+--------------------------------------------------------------------------------
+    speedFactor |   1.0153 |   1.1858 |   0.2821 |   0.5452 |   1.2429 |   1.1943
+       speedDev |   0.2722 |   0.2971 |   0.0578 |   0.1392 |   0.2997 |   0.2979
+          sigma |   0.5454 |   0.5433 |   0.2801 |   0.0665 |   0.9471 |   0.7457
+            tau |   1.9660 |   2.0460 |   0.7160 |   0.6984 |   2.9085 |   2.5270
+
+=================================================================
+  DIAGNOSTICS
+=================================================================
+[1/5] Pairplot...
+  Saved: snpe_pairplot.png
+[2/5] Marginals...
+  Saved: snpe_marginals.png
+[3/5] Calibration (200 sims)...
+2032it [00:00, 99106.08it/s]                                                                                 
+2061it [00:00, 108472.02it/s]                                                                                
+2041it [00:00, 113281.56it/s]                                                                                
+2035it [00:00, 94628.64it/s]                                                                                 
+2071it [00:00, 121805.03it/s]                                                                                
+2055it [00:00, 114155.28it/s]                                                                                
+2345it [00:00, 93772.81it/s]                                                                                 
+2061it [00:00, 100519.32it/s]                                                                                
+2057it [00:00, 108246.55it/s]                                                                                
+2041it [00:00, 107341.28it/s]                                                                                
+2044it [00:00, 104770.46it/s]                                                                                
+2041it [00:00, 123570.22it/s]                                                                                
+2044it [00:00, 116755.97it/s]                                                                                
+2049it [00:00, 120511.10it/s]                                                                                
+2046it [00:00, 120349.85it/s]                                                                                
+2035it [00:00, 92489.66it/s]                                                                                 
+2045it [00:00, 110453.17it/s]                                                                                
+2063it [00:00, 98222.91it/s]                                                                                 
+2068it [00:00, 111757.32it/s]                                                                                
+2055it [00:00, 120877.55it/s]                                                                                
+2039it [00:00, 94807.28it/s]                                                                                 
+2049it [00:00, 113761.72it/s]                                                                                
+2044it [00:00, 120195.12it/s]                                                                                
+2042it [00:00, 117978.52it/s]                                                                                
+2034it [00:00, 92449.22it/s]                                                                                 
+2055it [00:00, 105311.13it/s]                                                                                
+2045it [00:00, 102234.25it/s]                                                                                
+2036it [00:00, 119677.71it/s]                                                                                
+2037it [00:00, 113150.89it/s]                                                                                
+2058it [00:00, 114294.69it/s]                                                                                
+2064it [00:00, 103117.74it/s]                                                                                
+2037it [00:00, 109290.66it/s]                                                                                
+2202it [00:00, 93907.10it/s]                                                                                 
+2045it [00:00, 116809.91it/s]                                                                                
+2049it [00:00, 110721.97it/s]                                                                                
+2037it [00:00, 110084.88it/s]                                                                                
+2034it [00:00, 140256.05it/s]                                                                                
+2059it [00:00, 98049.16it/s]                                                                                 
+2079it [00:00, 103937.71it/s]                                                                                
+2053it [00:00, 120644.86it/s]                                                                                
+2035it [00:00, 101719.78it/s]                                                                                
+2029it [00:00, 94333.95it/s]                                                                                 
+2048it [00:00, 120460.74it/s]                                                                                
+2069it [00:00, 121491.48it/s]                                                                                
+2030it [00:00, 119346.77it/s]                                                                                
+2044it [00:00, 107561.10it/s]                                                                                
+2039it [00:00, 110154.64it/s]                                                                                
+2058it [00:00, 93532.97it/s]                                                                                 
+2033it [00:00, 123078.77it/s]                                                                                
+2041it [00:00, 107407.27it/s]                                                                                
+    50/200
+2049it [00:00, 97530.88it/s]                                                                                 
+2042it [00:00, 113446.66it/s]                                                                                
+2039it [00:00, 113217.00it/s]                                                                                
+2034it [00:00, 94548.60it/s]                                                                                 
+2044it [00:00, 113520.18it/s]                                                                                
+2054it [00:00, 114013.66it/s]                                                                                
+2041it [00:00, 101871.58it/s]                                                                                
+2046it [00:00, 131973.03it/s]                                                                                
+2034it [00:00, 101695.25it/s]                                                                                
+2062it [00:00, 131931.76it/s]                                                                                
+2035it [00:00, 101748.88it/s]                                                                                
+2065it [00:00, 108659.36it/s]                                                                                
+2051it [00:00, 113859.19it/s]                                                                                
+2038it [00:00, 99379.07it/s]                                                                                 
+2052it [00:00, 113533.03it/s]                                                                                
+2044it [00:00, 107581.34it/s]                                                                                
+2075it [00:00, 106389.35it/s]                                                                                
+2045it [00:00, 113509.58it/s]                                                                                
+2058it [00:00, 121067.60it/s]                                                                                
+2032it [00:00, 109801.93it/s]                                                                                
+2047it [00:00, 113712.39it/s]                                                                                
+2042it [00:00, 102024.69it/s]                                                                                
+2032it [00:00, 106928.28it/s]                                                                                
+2046it [00:00, 110566.99it/s]                                                                                
+2033it [00:00, 101652.52it/s]                                                                                
+2039it [00:00, 107303.37it/s]                                                                                
+2031it [00:00, 96644.48it/s]                                                                                 
+2059it [00:00, 95817.95it/s]                                                                                 
+2045it [00:00, 99589.58it/s]                                                                                 
+2033it [00:00, 106974.19it/s]                                                                                
+2096it [00:00, 118124.01it/s]                                                                                
+2039it [00:00, 101917.29it/s]                                                                                
+2039it [00:00, 97058.20it/s]                                                                                 
+2041it [00:00, 127600.27it/s]                                                                                
+2050it [00:00, 124172.48it/s]                                                                                
+2067it [00:00, 98387.67it/s]                                                                                 
+2058it [00:00, 108304.61it/s]                                                                                
+2036it [00:00, 99298.86it/s]                                                                                 
+2039it [00:00, 107330.30it/s]                                                                                
+2040it [00:00, 94747.70it/s]                                                                                 
+2039it [00:00, 99404.72it/s]                                                                                 
+2040it [00:00, 116546.53it/s]                                                                                
+2046it [00:00, 102284.25it/s]                                                                                
+2056it [00:00, 117415.84it/s]                                                                                
+2047it [00:00, 107655.49it/s]                                                                                
+2045it [00:00, 120262.35it/s]                                                                                
+2046it [00:00, 113620.72it/s]                                                                                
+2046it [00:00, 102285.47it/s]                                                                                
+2052it [00:00, 128242.10it/s]                                                                                
+2068it [00:00, 105972.15it/s]                                                                                
+    100/200
+2050it [00:00, 113815.73it/s]                                                                                
+2048it [00:00, 120391.51it/s]                                                                                
+2064it [00:00, 111518.16it/s]                                                                                
+2035it [00:00, 119679.31it/s]                                                                                
+2063it [00:00, 108580.00it/s]                                                                                
+2059it [00:00, 97980.19it/s]                                                                                 
+2059it [00:00, 107464.62it/s]                                                                                
+2045it [00:00, 104865.29it/s]                                                                                
+2048it [00:00, 124054.92it/s]                                                                                
+2047it [00:00, 97446.74it/s]                                                                                 
+2039it [00:00, 99438.24it/s]                                                                                 
+2055it [00:00, 108139.95it/s]                                                                                
+2098it [00:00, 102264.43it/s]                                                                                
+2040it [00:00, 90630.02it/s]                                                                                 
+2032it [00:00, 116040.49it/s]                                                                                
+2055it [00:00, 128420.02it/s]                                                                                
+2066it [00:00, 105922.72it/s]                                                                                
+2070it [00:00, 100397.90it/s]                                                                                
+2052it [00:00, 110861.23it/s]                                                                                
+2052it [00:00, 124318.76it/s]                                                                                
+2040it [00:00, 92722.94it/s]                                                                                 
+2065it [00:00, 111595.19it/s]                                                                                
+2048it [00:00, 96525.88it/s]                                                                                 
+2064it [00:00, 108481.53it/s]                                                                                
+2045it [00:00, 110501.55it/s]                                                                                
+2056it [00:00, 102780.49it/s]                                                                                
+2043it [00:00, 97018.48it/s]                                                                                 
+2036it [00:00, 90447.52it/s]                                                                                 
+2033it [00:00, 104211.72it/s]                                                                                
+2058it [00:00, 111186.82it/s]                                                                                
+2050it [00:00, 107817.32it/s]                                                                                
+2033it [00:00, 112934.68it/s]                                                                                
+2031it [00:00, 116013.39it/s]                                                                                
+2050it [00:00, 113888.09it/s]                                                                                
+2052it [00:00, 113965.99it/s]                                                                                
+2034it [00:00, 115995.19it/s]                                                                                
+2072it [00:00, 115098.11it/s]                                                                                
+2039it [00:00, 116425.97it/s]                                                                                
+2046it [00:00, 120334.66it/s]                                                                                
+2054it [00:00, 100167.43it/s]                                                                                
+2068it [00:00, 114771.03it/s]                                                                                
+2040it [00:00, 96915.52it/s]                                                                                 
+2040it [00:00, 99492.79it/s]                                                                                 
+2067it [00:00, 103341.48it/s]                                                                                
+2039it [00:00, 99422.06it/s]                                                                                 
+2039it [00:00, 101937.95it/s]                                                                                
+2036it [00:00, 92465.98it/s]                                                                                 
+2037it [00:00, 113140.40it/s]                                                                                
+2037it [00:00, 107098.68it/s]                                                                                
+2052it [00:00, 100024.54it/s]                                                                                
+    150/200
+2041it [00:00, 104609.02it/s]                                                                                
+2057it [00:00, 110759.00it/s]                                                                                
+2038it [00:00, 90565.15it/s]                                                                                 
+2054it [00:00, 110596.05it/s]                                                                                
+2035it [00:00, 119712.88it/s]                                                                                
+2054it [00:00, 124434.53it/s]                                                                                
+2330it [00:00, 93195.20it/s]                                                                                 
+2034it [00:00, 109874.61it/s]                                                                                
+2058it [00:00, 95686.48it/s]                                                                                 
+2045it [00:00, 90850.23it/s]                                                                                 
+2054it [00:00, 120825.51it/s]                                                                                
+2052it [00:00, 110898.37it/s]                                                                                
+2033it [00:00, 106929.93it/s]                                                                                
+2050it [00:00, 110753.18it/s]                                                                                
+2040it [00:00, 94844.32it/s]                                                                                 
+2039it [00:00, 113278.49it/s]                                                                                
+2035it [00:00, 107032.44it/s]                                                                                
+2049it [00:00, 97559.67it/s]                                                                                 
+2052it [00:00, 100017.57it/s]                                                                                
+2070it [00:00, 125409.27it/s]                                                                                
+2057it [00:00, 97939.46it/s]                                                                                 
+2034it [00:00, 119630.56it/s]                                                                                
+2035it [00:00, 116246.63it/s]                                                                                
+2055it [00:00, 111046.20it/s]                                                                                
+2035it [00:00, 99237.40it/s]                                                                                 
+2055it [00:00, 110900.46it/s]                                                                                
+2063it [00:00, 121334.51it/s]                                                                                
+2042it [00:00, 107457.20it/s]                                                                                
+2033it [00:00, 94525.16it/s]                                                                                 
+2043it [00:00, 99585.84it/s]                                                                                 
+2061it [00:00, 111271.50it/s]                                                                                
+2051it [00:00, 102546.43it/s]                                                                                
+2039it [00:00, 99419.74it/s]                                                                                 
+2050it [00:00, 120576.68it/s]                                                                                
+2052it [00:00, 110838.39it/s]                                                                                
+2047it [00:00, 97445.64it/s]                                                                                 
+2042it [00:00, 116563.94it/s]                                                                                
+2055it [00:00, 111026.17it/s]                                                                                
+2042it [00:00, 127622.84it/s]                                                                                
+2053it [00:00, 107989.99it/s]                                                                                
+2034it [00:00, 107037.56it/s]                                                                                
+2042it [00:00, 113385.08it/s]                                                                                
+2048it [00:00, 104971.64it/s]                                                                                
+2041it [00:00, 120055.74it/s]                                                                                
+2035it [00:00, 90388.74it/s]                                                                                 
+2045it [00:00, 118430.81it/s]                                                                                
+2048it [00:00, 113410.45it/s]                                                                                
+2045it [00:00, 104808.91it/s]                                                                                
+2050it [00:00, 120517.53it/s]                                                                                
+2042it [00:00, 97238.52it/s]                                                                                 
+    200/200
+
+  Calibration:
+      50% CI: observed  47.6%  [OK]
+      60% CI: observed  56.5%  [OK]
+      70% CI: observed  65.9%  [OK]
+      80% CI: observed  76.9%  [OK]
+      90% CI: observed  89.2%  [OK]
+      95% CI: observed  94.8%  [OK]
+  Saved: snpe_calibration.png
+[4/5] Recovery bias...
+  Saved: snpe_recovery_bias.png
+[5/5] Feature importance...
+  0%|                                                                               | 0/5000 [00:00<?, ?it/s]WARNING:root:Only 0.113% proposal samples are
+                    accepted. It may take a long time to collect the remaining
+                    4983 samples. Consider interrupting (Ctrl-C) and switching to
+                    `build_posterior(..., sample_with='mcmc')`.
+100%|███████████████████████████████████████████████████████████████████| 5000/5000 [00:12<00:00, 415.03it/s]
+5063it [00:00, 187472.51it/s]                                                                                
+  0%|                                                                               | 0/5000 [00:00<?, ?it/s]WARNING:root:Only 0.073% proposal samples are
+                    accepted. It may take a long time to collect the remaining
+                    4989 samples. Consider interrupting (Ctrl-C) and switching to
+                    `build_posterior(..., sample_with='mcmc')`.
+5001it [00:18, 270.96it/s]                                                                                   
+  0%|                                                                               | 0/5000 [00:00<?, ?it/s]WARNING:root:Only 0.067% proposal samples are
+                    accepted. It may take a long time to collect the remaining
+                    4990 samples. Consider interrupting (Ctrl-C) and switching to
+                    `build_posterior(..., sample_with='mcmc')`.
+5003it [00:37, 133.13it/s]                                                                                   
+  0%|                                                                               | 0/5000 [00:00<?, ?it/s]WARNING:root:Only 0.013% proposal samples are
+                    accepted. It may take a long time to collect the remaining
+                    4998 samples. Consider interrupting (Ctrl-C) and switching to
+                    `build_posterior(..., sample_with='mcmc')`.
+5002it [02:02, 40.76it/s]                                                                                    
+  0%|                                                                               | 0/5000 [00:00<?, ?it/s]WARNING:root:Only 0.033% proposal samples are
+                    accepted. It may take a long time to collect the remaining
+                    4995 samples. Consider interrupting (Ctrl-C) and switching to
+                    `build_posterior(..., sample_with='mcmc')`.
+5001it [00:34, 144.63it/s]                                                                                   
+  0%|                                                                               | 0/5000 [00:00<?, ?it/s]WARNING:root:Only 0.127% proposal samples are
+                    accepted. It may take a long time to collect the remaining
+                    4981 samples. Consider interrupting (Ctrl-C) and switching to
+                    `build_posterior(..., sample_with='mcmc')`.
+100%|███████████████████████████████████████████████████████████████████| 5000/5000 [00:20<00:00, 242.85it/s]
+  0%|                                                                               | 0/5000 [00:00<?, ?it/s]WARNING:root:Only 0.040% proposal samples are
+                    accepted. It may take a long time to collect the remaining
+                    4994 samples. Consider interrupting (Ctrl-C) and switching to
+                    `build_posterior(..., sample_with='mcmc')`.
+100%|███████████████████████████████████████████████████████████████████| 5000/5000 [00:39<00:00, 127.89it/s]
+5047it [00:00, 9101.80it/s]                                                                                  
+  Saved: snpe_feature_importance.png
+
+=================================================================
+  SAVING
+=================================================================
+  snpe_posterior.pkl
+  snpe_samples.pt
+  snpe_results.npz
+
+=================================================================
+  FINAL SUMMARY
+=================================================================
+
+  Features:  9 (from 57 original)
+  Training:  22s
+  Sampling:  direct, 50000 samples in 427.2s
+
+  Inferred parameters (TomTom x_obs):
+        Parameter |      MAP |        Mean±Std |             90% CI
+  ------------------------------------------------------------
+      speedFactor |   1.1943 |  1.0153 ± 0.2821 | [0.5452, 1.2429]
+         speedDev |   0.2979 |  0.2722 ± 0.0578 | [0.1392, 0.2997]
+            sigma |   0.7457 |  0.5454 ± 0.2801 | [0.0665, 0.9471]
+              tau |   2.5270 |  1.9660 ± 0.7160 | [0.6984, 2.9085]
+
+  Calibration: EXCELLENT (max deviation 4.1%)
